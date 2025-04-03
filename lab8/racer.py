@@ -2,6 +2,7 @@
 import pygame, sys
 from pygame.locals import *
 import random, time
+import os
 
 # Initializing Pygame
 pygame.init()
@@ -30,7 +31,7 @@ font_small = pygame.font.SysFont("Verdana", 20)
 game_over = font.render("Game Over", True, BLACK)
 
 # Load background image
-background = pygame.image.load("images/AnimatedStreet.png")
+background = pygame.image.load(os.path.join(os.path.dirname(__file__), "images", "AnimatedStreet.png"))
 
 # Create game window
 DISPLAYSURF = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
@@ -41,7 +42,7 @@ pygame.display.set_caption("Racer Game")
 class Enemy(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__() 
-        self.image = pygame.image.load("images/Enemy.png")
+        self.image = pygame.image.load(os.path.join(os.path.dirname(__file__), "images", "Enemy.png"))
         self.rect = self.image.get_rect()
         self.rect.center = (random.randint(40, SCREEN_WIDTH - 40), 0)  
 
@@ -58,7 +59,7 @@ class Enemy(pygame.sprite.Sprite):
 class Player(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__() 
-        self.image = pygame.image.load("images/Player.png")
+        self.image = pygame.image.load(os.path.join(os.path.dirname(__file__), "images", "Player.png"))
         self.rect = self.image.get_rect()
         self.rect.center = (160, 520)
         
@@ -74,7 +75,7 @@ class Player(pygame.sprite.Sprite):
 class Coin(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
-        original_image = pygame.image.load("images/Coin.png")  # Load original image
+        original_image = pygame.image.load(os.path.join(os.path.dirname(__file__), "images", "Coin.png"))  # Load original image
         self.image = pygame.transform.scale(original_image, (30, 30))  # Resize to 30x30 pixels
         self.rect = self.image.get_rect()
         self.reset_position()
@@ -136,7 +137,8 @@ while True:
 
     # Check for collision between Player and Enemy
     if pygame.sprite.spritecollideany(P1, enemies):
-        pygame.mixer.Sound('musics/crash.wav.mp3').play()
+        sound_path = os.path.join(os.path.dirname(__file__), "musics", "crash.wav.mp3")
+        pygame.mixer.Sound(sound_path).play()
         time.sleep(0.5)
                     
         DISPLAYSURF.fill(RED)

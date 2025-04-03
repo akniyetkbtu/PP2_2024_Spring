@@ -1,6 +1,7 @@
 import pygame, sys
 from pygame.locals import *
 import random, time
+import os
 
 # Initialize Pygame
 pygame.init()
@@ -24,13 +25,13 @@ SCORE = 0
 COINS_COLLECTED = 0
 COIN_THRESHOLD = 5  # Increase speed after collecting 5 coins
 
-# Set up Fonts
+# Set up Font
 font = pygame.font.SysFont("Verdana", 60)
 font_small = pygame.font.SysFont("Verdana", 20)
 game_over = font.render("Game Over", True, BLACK)
 
 # Load Background Image
-background = pygame.image.load("labs/lab8/images/AnimatedStreet.png")
+background = pygame.image.load(os.path.join(os.path.dirname(__file__), "..", "lab8", "images", "AnimatedStreet.png"))
 
 # Create Game Window
 DISPLAYSURF = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
@@ -41,7 +42,7 @@ pygame.display.set_caption("Racer Game")
 class Enemy(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
-        self.image = pygame.image.load("labs/lab8/images/Enemy.png")
+        self.image = pygame.image.load(os.path.join(os.path.dirname(__file__), "..", "lab8", "images", "Enemy.png"))
         self.rect = self.image.get_rect()
         self.rect.center = (random.randint(40, SCREEN_WIDTH - 40), 0)
 
@@ -58,7 +59,7 @@ class Enemy(pygame.sprite.Sprite):
 class Player(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
-        self.image = pygame.image.load("labs/lab8/images/Player.png")
+        self.image = pygame.image.load(os.path.join(os.path.dirname(__file__), "..", "lab8", "images", "Player.png"))
         self.rect = self.image.get_rect()
         self.rect.center = (160, 520)
 
@@ -74,7 +75,7 @@ class Player(pygame.sprite.Sprite):
 class Coin(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
-        original_image = pygame.image.load("labs/lab8/images/Coin.png")
+        original_image = pygame.image.load(os.path.join(os.path.dirname(__file__), "..", "lab8", "images", "Coin.png"))
         self.image = pygame.transform.scale(original_image, (30, 30))
         self.rect = self.image.get_rect()
         self.value = self.assign_value()
@@ -139,7 +140,8 @@ while True:
 
     # Check Collision with Enemy
     if pygame.sprite.spritecollideany(P1, enemies):
-        pygame.mixer.Sound('labs/lab8/musics/crash.wav.mp3').play()
+        sound_path = os.path.join(os.path.dirname(__file__), "..", "lab8", "musics", "crash.wav.mp3")
+        pygame.mixer.Sound(sound_path).play()
         time.sleep(0.5)
         DISPLAYSURF.fill(RED)
         DISPLAYSURF.blit(game_over, (30, 250))
